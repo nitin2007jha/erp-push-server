@@ -15,6 +15,8 @@ module.exports = async (req, res) => {
     const { uid, orderId } = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
     if (!uid || !orderId) return res.status(400).json({ error: 'uid/orderId missing' });
 
+    const APP_ID = (process.env.APP_ID || 'dev-ayurveda-pro-auth').trim();
+const base = db.collection('artifacts').doc(APP_ID).collection('users').doc(uid);
     const base = db.collection('artifacts').doc(process.env.APP_ID).collection('users').doc(uid);
     const orderRef = base.collection('onlineOrders').doc(orderId);
     const snap = await orderRef.get();
